@@ -386,12 +386,13 @@ public:
     /// \param[in] serial POinter to the HardwareSerial port to use to communicate with the Roomba.
     /// Defaults to &Serial
     /// \param[in] baud the baud rate to use on the serial port. Defaults to 57600, the default for the Roomba.
+    #def HAVE_HWSERIAL0
     #ifdef HAVE_HWSERIAL0
       Roomba(HardwareSerial* serial = &Serial, Baud baud = Baud57600);
     #elif defined HAVE_HWSERIAL1
       Roomba(HardwareSerial* serial = &Serial1, Baud baud = Baud57600);
     #else
-      Roomba(HardwareSerial* serial = &Serial, Baud baud = Baud57600); //Roomba(Serial_* serial = &serial, Baud baud = Baud57600);
+      Roomba(Serial_* serial = &serial, Baud baud = Baud57600);
     #endif
 
     /// Resets the Roomba.
