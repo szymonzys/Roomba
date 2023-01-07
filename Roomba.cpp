@@ -12,10 +12,16 @@ Roomba::Roomba(HardwareSerial* serial, Baud baud)
   _pollState = PollStateIdle;
 }
 
+void Roomba::write(char c)
+{
+    _serial->write(c);
+	delay(50);
+}
+
 // Resets the
 void Roomba::reset()
 {
-    _serial->write(7);
+    write(7);
 }
 
 // Start OI
@@ -23,7 +29,7 @@ void Roomba::reset()
 void Roomba::start()
 {
     _serial->begin(_baud);
-    _serial->write(128);
+    write(128);
 }
 
 uint32_t Roomba::baudCodeToBaudRate(Baud baud)
@@ -61,8 +67,8 @@ uint32_t Roomba::baudCodeToBaudRate(Baud baud)
 
 void Roomba::baud(Baud baud)
 {
-    _serial->write(129);
-    _serial->write(baud);
+    write(129);
+    write(baud);
 
     _baud = baudCodeToBaudRate(baud);
     _serial->begin(_baud);
@@ -70,188 +76,188 @@ void Roomba::baud(Baud baud)
 
 void Roomba::safeMode()
 {
-  _serial->write(131);
+  write(131);
 }
 
 void Roomba::fullMode()
 {
-  _serial->write(132);
+  write(132);
 }
 
 void Roomba::power()
 {
-  _serial->write(133);
+  write(133);
 }
 
 void Roomba::dock()
 {
-  _serial->write(143);
+  write(143);
 }
 
 void Roomba::demo(Demo demo)
 {
-  _serial->write(136);
-  _serial->write(demo);
+  write(136);
+  write(demo);
 }
 
 void Roomba::cover()
 {
-  _serial->write(135);
+  write(135);
 }
 
 void Roomba::coverAndDock()
 {
-  _serial->write(143);
+  write(143);
 }
 
 void Roomba::spot()
 {
-  _serial->write(134);
+  write(134);
 }
 
 void Roomba::drive(int16_t velocity, int16_t radius)
 {
-  _serial->write(137);
-  _serial->write((velocity & 0xff00) >> 8);
-  _serial->write(velocity & 0xff);
-  _serial->write((radius & 0xff00) >> 8);
-  _serial->write(radius & 0xff);
+  write(137);
+  write((velocity & 0xff00) >> 8);
+  write(velocity & 0xff);
+  write((radius & 0xff00) >> 8);
+  write(radius & 0xff);
 }
 
 void Roomba::driveDirect(int16_t leftVelocity, int16_t rightVelocity)
 {
-  _serial->write(145);
-  _serial->write((rightVelocity & 0xff00) >> 8);
-  _serial->write(rightVelocity & 0xff);
-  _serial->write((leftVelocity & 0xff00) >> 8);
-  _serial->write(leftVelocity & 0xff);
+  write(145);
+  write((rightVelocity & 0xff00) >> 8);
+  write(rightVelocity & 0xff);
+  write((leftVelocity & 0xff00) >> 8);
+  write(leftVelocity & 0xff);
 }
 
 void Roomba::leds(uint8_t leds, uint8_t powerColour, uint8_t powerIntensity)
 {
-  _serial->write(139);
-  _serial->write(leds);
-  _serial->write(powerColour);
-  _serial->write(powerIntensity);
+  write(139);
+  write(leds);
+  write(powerColour);
+  write(powerIntensity);
 }
 
 void Roomba::digitLedsRaw(uint8_t digit3, uint8_t digit2, uint8_t digit1, uint8_t digit0)
 {
-  _serial->write(163);
-  _serial->write(digit3);
-  _serial->write(digit2);
-  _serial->write(digit1);
-  _serial->write(digit0);
+  write(163);
+  write(digit3);
+  write(digit2);
+  write(digit1);
+  write(digit0);
 }
 
 void Roomba::digitLedsASCII(uint8_t digit3, uint8_t digit2, uint8_t digit1, uint8_t digit0)
 {
-  _serial->write(164);
-  _serial->write(digit3);
-  _serial->write(digit2);
-  _serial->write(digit1);
-  _serial->write(digit0);
+  write(164);
+  write(digit3);
+  write(digit2);
+  write(digit1);
+  write(digit0);
 }
 
 void Roomba::digitalOut(uint8_t out)
 {
-  _serial->write(147);
-  _serial->write(out);
+  write(147);
+  write(out);
 }
 
 // Sets PWM duty cycles on low side drivers
 void Roomba::pwmDrivers(uint8_t dutyCycle0, uint8_t dutyCycle1, uint8_t dutyCycle2)
 {
-  _serial->write(144);
-  _serial->write(dutyCycle2);
-  _serial->write(dutyCycle1);
-  _serial->write(dutyCycle0);
+  write(144);
+  write(dutyCycle2);
+  write(dutyCycle1);
+  write(dutyCycle0);
 }
 
 // Sets low side driver outputs on or off
 void Roomba::drivers(uint8_t out)
 {
-  _serial->write(138);
-  _serial->write(out);
+  write(138);
+  write(out);
 }
 
 // Modulates low side driver 1 (pin 23 on Cargo Bay Connector)
 // with the given IR command
 void Roomba::sendIR(uint8_t data)
 {
-  _serial->write(151);
-  _serial->write(data);
+  write(151);
+  write(data);
 }
 
 // Define a song
 // Data is 2 bytes per note
 void Roomba::song(uint8_t songNumber, const uint8_t* data, int len)
 {
-    _serial->write(140);
-    _serial->write(songNumber);
-    _serial->write(len >> 1); // 2 bytes per note
-    _serial->write(data, len);
+    write(140);
+    write(songNumber);
+    write(len >> 1); // 2 bytes per note
+    write(data, len);
 }
 
 void Roomba::playSong(uint8_t songNumber)
 {
-  _serial->write(141);
-  _serial->write(songNumber);
+  write(141);
+  write(songNumber);
 }
 
 // Start a stream of sensor data with the specified packet IDs in it
 void Roomba::stream(const uint8_t* packetIDs, int len)
 {
-  _serial->write(148);
-  _serial->write(packetIDs, len);
+  write(148);
+  write(packetIDs, len);
 }
 
 // One of StreamCommand*
 void Roomba::streamCommand(StreamCommand command)
 {
-  _serial->write(150);
-  _serial->write(command);
+  write(150);
+  write(command);
 }
 
 // Use len=0 to clear the script
 void Roomba::script(const uint8_t* script, uint8_t len)
 {
-  _serial->write(152);
-  _serial->write(len);
-  _serial->write(script, len);
+  write(152);
+  write(len);
+  write(script, len);
 }
 
 void Roomba::playScript()
 {
-  _serial->write(153);
+  write(153);
 }
 
 // Each tick is 15ms
 void Roomba::wait(uint8_t ticks)
 {
-  _serial->write(155);
-  _serial->write(ticks);
+  write(155);
+  write(ticks);
 }
 
 void Roomba::waitDistance(int16_t mm)
 {
-  _serial->write(156);
-  _serial->write((mm & 0xff00) >> 8);
-  _serial->write(mm & 0xff);
+  write(156);
+  write((mm & 0xff00) >> 8);
+  write(mm & 0xff);
 }
 
 void Roomba::waitAngle(int16_t degrees)
 {
-  _serial->write(157);
-  _serial->write((degrees & 0xff00) >> 8);
-  _serial->write(degrees & 0xff);
+  write(157);
+  write((degrees & 0xff00) >> 8);
+  write(degrees & 0xff);
 }
 
 // Can use the negative of an event type to wait for the inverse of an event
 void Roomba::waitEvent(EventType type)
 {
-  _serial->write(158);
-  _serial->write(type);
+  write(158);
+  write(type);
 }
 
 // Reads at most len bytes and stores them to dest
@@ -277,15 +283,15 @@ bool Roomba::getData(uint8_t* dest, uint8_t len)
 
 bool Roomba::getSensors(uint8_t packetID, uint8_t* dest, uint8_t len)
 {
-  _serial->write(142);
-  _serial->write(packetID);
+  write(142);
+  write(packetID);
   return getData(dest, len);
 }
 
 bool Roomba::getSensorsList(uint8_t* packetIDs, uint8_t numPacketIDs, uint8_t* dest, uint8_t len)
 {
-  _serial->write(149);
-  _serial->write(numPacketIDs);
+  write(149);
+  write(numPacketIDs);
   _serial->write(packetIDs, numPacketIDs);
   return getData(dest, len);
 }
@@ -334,7 +340,7 @@ bool Roomba::pollSensors(uint8_t* dest, uint8_t len)
 // Calling with len = 0 will return the amount of space required without actually storing anything
 uint8_t Roomba::getScript(uint8_t* dest, uint8_t len)
 {
-  _serial->write(154);
+  write(154);
 
   unsigned long startTime = millis();
   while (!_serial->available())
