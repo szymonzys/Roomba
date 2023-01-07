@@ -395,6 +395,9 @@ public:
       Roomba(Serial_* serial = &serial, Baud baud = Baud57600);
     #endif
 
+	
+    void Roomba::serialwrite(char c);
+	
     /// Resets the Roomba.
     /// It will emit its startup message
     /// Caution, this may take several seconds to complete
