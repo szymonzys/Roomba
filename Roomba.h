@@ -396,7 +396,7 @@ public:
     #endif
 
 	
-    void Roomba::serialwrite(char c);
+    void serialwrite(char c);
 	
     /// Resets the Roomba.
     /// It will emit its startup message
